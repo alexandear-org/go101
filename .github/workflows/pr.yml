@@ -1,0 +1,47 @@
+name: Go101 Generation Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  gen-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.23'
+
+      - name: Set up Zig
+        uses: mlugg/setup-zig@v2
+
+      - name: Install tmd tool
+        run: |
+          git clone https://github.com/tapirmd/tmd.git && cd tmd
+          zig build -Doptimize=ReleaseSafe
+          echo "$PWD/zig-out/bin" >> $GITHUB_PATH
+
+      - name: Install go101-quiz-tmd-addon
+        run: |
+          git clone https://github.com/go101/go101-quiz-tmd-addon.git && cd go101-quiz-tmd-addon
+          go install
+
+      - name: Install ebooktool
+        run: |
+          go install go101.org/ebooktool@latest
+
+      - name: Generate files
+        run: go run . -gen
+
+      - name: Check for changes
+        run: git diff --exit-code
