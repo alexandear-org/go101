@@ -46,7 +46,7 @@ Contents:
 </li>
 <li class="tmd-list-item tmd-toc-item"><a href="#notes-during-upgrading">Upgrading module versions</a>
 </li>
-<li class="tmd-list-item tmd-toc-item"><a href="#avoid-freshly-declared-loop-vars">Avoid using freshly-declared loop variables in <code class="tmd-code-span">for;;</code> loops if you worry about getting bitten by the pitful of the new semantics</a>
+<li class="tmd-list-item tmd-toc-item"><a href="#avoid-freshly-declared-loop-vars">Avoid using freshly-declared loop variables in <code class="tmd-code-span">for;;</code> loops if you worry about getting bitten by the pitfalls of the new semantics</a>
 </li>
 </ul>
 <li class="tmd-list-item tmd-toc-item"><a href="#final-words">Final words</a>
@@ -250,7 +250,7 @@ On the other hand, in my honest opinion, the rationale of the change to <code cl
 </code></pre>
 <p></p>
 <div class="tmd-usual">
-The <code class="tmd-code-span">a, b, c := anExpression</code> statement is only executed once during the execution of the loop, so it is intuitive that the loop variables are only <span class="tmd-bold"><span class="tmd-italic">explicitly</span></span> instantiated once during the execution of the loop. The new semantics make the the loop variables instantiated at each iteration, which means there must be some <span class="tmd-bold"><span class="tmd-italic">implicit</span></span><span class="tmd-italic"></span> code to do the job. This is true. <a href="https://go.dev/ref/spec#For_statements">Go 1.22+ specification</a> says:
+The <code class="tmd-code-span">a, b, c := anExpression</code> statement is only executed once during the execution of the loop, so it is intuitive that the loop variables are only <span class="tmd-bold"><span class="tmd-italic">explicitly</span></span> instantiated once during the execution of the loop. The new semantics make the loop variables instantiated at each iteration, which means there must be some <span class="tmd-bold"><span class="tmd-italic">implicit</span></span><span class="tmd-italic"></span> code to do the job. This is true. <a href="https://go.dev/ref/spec#For_statements">Go 1.22+ specification</a> says:
 </div>
 <p></p>
 <div class="tmd-quotation">
@@ -261,7 +261,7 @@ Each iteration has its own separate declared variable (or variables). The variab
 <p></p>
 <p></p>
 <div class="tmd-usual">
-By the speficication, since Go 1.22, the loop shown above is actually equivalent to the following pseudo-code (<span class="tmd-italic">Sorry, the new semantics are hard to explain in a clear and perfect way. None of Go official documentations ever successfully achieve this goal. Here, I have tried my best.</span>):
+By the specification, since Go 1.22, the loop shown above is actually equivalent to the following pseudo-code (<span class="tmd-italic">Sorry, the new semantics are hard to explain in a clear and perfect way. None of Go official documentations ever successfully achieve this goal. Here, I have tried my best.</span>):
 </div>
 <p></p>
 <pre class="tmd-code">
@@ -965,7 +965,7 @@ Firstly, let's view a simple program.
 </div>
 <p></p>
 <pre class="tmd-code">
-<code class="language-Go">// demo-concurency1.go
+<code class="language-Go">// demo-concurrency1.go
 package main
 
 import (
@@ -990,8 +990,8 @@ func main() {
 The above program is intended to print the values of the loop variable <code class="tmd-code-span">i</code> at each iteration. Prior to Go 1.22, there is a clear data race condition present in the program, because the loop variable <code class="tmd-code-span">i</code> is only instantiated once during the whole loop. All the new created goroutines will read the single instance but the main goroutine will modify it. The following outputs prove this fact:
 </div>
 <pre class="tmd-code">
-$ CGO_ENABLED=1 gotv 1.21. run -race demo-concurency1.go
-[Run]: $HOME/.cache/gotv/tag_go1.21.7/bin/go run -race demo-concurency1.go
+$ CGO_ENABLED=1 gotv 1.21. run -race demo-concurrency1.go
+[Run]: $HOME/.cache/gotv/tag_go1.21.7/bin/go run -race demo-concurrency1.go
 3
 3
 ==================
@@ -1005,8 +1005,8 @@ WARNING: DATA RACE
 Prior to Go 1.22, the fix is simple, just add an <code class="tmd-code-span">i := i</code> line at the start of the loop body. Go 1.22 fixes the specified data race problem by changing the semantics of <code class="tmd-code-span">for;;</code> loops, without modifying the old problematic code. This can be verified by the following outputs:
 </div>
 <pre class="tmd-code">
-$ CGO_ENABLED=1 gotv 1.22. run -race demo-concurency1.go
-[Run]: $HOME/.cache/gotv/tag_go1.22.0/bin/go run -race demo-concurency1.go
+$ CGO_ENABLED=1 gotv 1.22. run -race demo-concurrency1.go
+[Run]: $HOME/.cache/gotv/tag_go1.22.0/bin/go run -race demo-concurrency1.go
 1
 2
 0
@@ -1021,7 +1021,7 @@ The effect of the attempt to fix the problem by making semantic change is actual
 </div>
 <p></p>
 <pre class="tmd-code">
-<code class="language-Go">// demo-concurency2.go
+<code class="language-Go">// demo-concurrency2.go
 package main
 
 import (
@@ -1051,8 +1051,8 @@ Is the new code still data race free (with Go 1.22 semantics)? It looks good. Ea
 The following outputs verify there is a data race condition present in the new code:
 </div>
 <pre class="tmd-code">
-$ CGO_ENABLED=1 gotv 1.22. run -race demo-concurency2.go
-[Run]: $HOME/.cache/gotv/tag_go1.22.0/bin/go run -race demo-concurency2.go
+$ CGO_ENABLED=1 gotv 1.22. run -race demo-concurrency2.go
+[Run]: $HOME/.cache/gotv/tag_go1.22.0/bin/go run -race demo-concurrency2.go
 ==================
 WARNING: DATA RACE
 ...
@@ -1076,7 +1076,7 @@ More seriously, some old good concurrent code will become problematic. Here is a
 </div>
 <p></p>
 <pre class="tmd-code">
-<code class="language-Go">// demo-concurency3.go
+<code class="language-Go">// demo-concurrency3.go
 package main
 
 import (
@@ -1118,15 +1118,15 @@ func main() {
 Run it with different toolchain versions, get the following outputs:
 </div>
 <pre class="tmd-code">
-$ CGO_ENABLED=1 gotv 1.21. run -race demo-concurency3.go
-[Run]: $HOME/.cache/gotv/tag_go1.21.7/bin/go run -race demo-concurency3.go
+$ CGO_ENABLED=1 gotv 1.21. run -race demo-concurrency3.go
+[Run]: $HOME/.cache/gotv/tag_go1.21.7/bin/go run -race demo-concurrency3.go
 Found gold 1048576
 Found gold 2097152
 Found gold 3145728
 ...
 ^C
-$ CGO_ENABLED=1 gotv 1.22. run -race demo-concurency3.go
-[Run]: $HOME/.cache/gotv/tag_go1.22.0/bin/go run -race demo-concurency3.go
+$ CGO_ENABLED=1 gotv 1.22. run -race demo-concurrency3.go
+[Run]: $HOME/.cache/gotv/tag_go1.22.0/bin/go run -race demo-concurrency3.go
 ==================
 WARNING: DATA RACE
 ...
@@ -1252,14 +1252,14 @@ If you upgrade dependency modules of your Go projects, pay attention to those on
 <div class="tmd-base">
 <p></p>
 <div class="tmd-usual">
-And please note that, <span class="tmd-bold"><span class="tmd-italic">sometimes, the <code class="tmd-code-span">go mod tidy</code> command provided by the official Go toolchain will automatically upgrade the language versions (specified in <code class="tmd-code-span">go.mod</code> files) of your projects, without detecting potential problems that will break the behaviors of your projects, without notifying you the upgradation. You might find the behavior changes in time or not. Just be careful!</span></span>
+And please note that, <span class="tmd-bold"><span class="tmd-italic">sometimes, the <code class="tmd-code-span">go mod tidy</code> command provided by the official Go toolchain will automatically upgrade the language versions (specified in <code class="tmd-code-span">go.mod</code> files) of your projects, without detecting potential problems that will break the behaviors of your projects, without notifying you the upgrade. You might find the behavior changes in time or not. Just be careful!</span></span>
 </div>
 </div>
 </li>
 </ul>
 <p></p>
 <h3 id="avoid-freshly-declared-loop-vars" class="tmd-header-3">
-Avoid using freshly-declared loop variables in <code class="tmd-code-span">for;;</code> loops if you worry about getting bitten by the pitful of the new semantics
+Avoid using freshly-declared loop variables in <code class="tmd-code-span">for;;</code> loops if you worry about getting bitten by the pitfalls of the new semantics
 </h3>
 <p></p>
 <div class="tmd-usual">
@@ -1367,7 +1367,7 @@ What's done is done. In the end, I hope this article will help you write profess
 <ol class="tmd-list tmd-footnotes" id="fn:">
 <li id="fn:gotv" class="tmd-list-item tmd-footnote-item">
 <div id="gotv" class="tmd-usual">
-GoTV (<a href="https://go101.org/apps-and-libs/gotv.html">https://go101.org/apps-and-libs/gotv.html</a>) is a tool used to install and use coexisting installations of Go toolchain verisons harmoniously.
+GoTV (<a href="https://go101.org/apps-and-libs/gotv.html">https://go101.org/apps-and-libs/gotv.html</a>) is a tool used to install and use coexisting installations of Go toolchain versions harmoniously.
 </div>
 <a href="#fn:gotv:ref-1">↩︎</a></li>
 </ol>

@@ -3,12 +3,12 @@
 
 Three-way string comparison is widely used in programming (__proof 1__ and __proof 2__).
 But up to now (Go 1.19), the __strings.Compare__ function in the standard library
-is (__intentionally__) implemented with __a non-opitimized way__:
+is (__intentionally__) implemented with __a non-optimized way__:
 
     === proof 1 `` https://sourcegraph.com/search?q=context:global+switch+strings.Compare+lang:Go+&patternType=literal
     === proof 2 `` https://sourcegraph.com/search?q=context:global+strings.Compare+lang:Go&patternType=standard
     === intentionally `` https://news.ycombinator.com/item?id=33353106
-    === a non-opitimized way `` https://go-review.googlesource.com/c/go/+/3012
+    === a non-optimized way `` https://go-review.googlesource.com/c/go/+/3012
 
 ''' Go
 func Compare(a, b string) int {
@@ -78,9 +78,9 @@ Update: view discussions on __reddit__ and __HN__.
     === reddit `` https://old.reddit.com/r/programming/comments/ycz0va/no_safe_efficient_ways_to_do_threeway_string/
     === HN `` https://news.ycombinator.com/item?id=33316402
 
-Update 2: finally, the `strings.Compare` function __got optimizted in Go 1.23__.
+Update 2: finally, the `strings.Compare` function __got optimized in Go 1.23__.
 
-    === got optimizted in Go 1.23 `` https://github.com/golang/go/commit/fd999fda5941f215ef082c6ef70e44e648db5485
+    === got optimized in Go 1.23 `` https://github.com/golang/go/commit/fd999fda5941f215ef082c6ef70e44e648db5485
 
 
 

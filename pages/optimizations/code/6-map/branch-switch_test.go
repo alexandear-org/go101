@@ -2,10 +2,10 @@ package maps
 
 import "testing"
 
-//go:noiline
+//go:noinline
 func f() {}
 
-//go:noiline
+//go:noinline
 func g() {}
 
 func IfElse(x bool) func() {

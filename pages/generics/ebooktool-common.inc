@@ -5,8 +5,8 @@ book.title: Go Generics 101
 book.author: Tapir Liu
 
 ; optional
-; Recommanded ration: 1 : 1.6
-; Recommanded sizes: 1000x1600, 1600x2560
+; Recommended ration: 1 : 1.6
+; Recommended sizes: 1000x1600, 1600x2560
 book.cover-image: res/cover-1000x.png
 
 ; optional.

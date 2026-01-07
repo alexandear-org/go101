@@ -537,7 +537,7 @@ differences between built-in functions and custom functions.
   * generic
   * built-in function returns can't be omitted
   * built-in functions can't be used as values, they have no types.
-  * built-in doon't need to be imported before using them, even their identifiers starts with lower..
+  * built-in don't need to be imported before using them, even their identifiers starts with lower..
   *
 
 built-in function list
