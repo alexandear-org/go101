@@ -5,7 +5,7 @@ No Safe Efficient Ways to Do Three-way String Comparisons in Go
 </h1>
 <p></p>
 <div class="tmd-usual">
-Three-way string comparison is widely used in programming (<a href="https://sourcegraph.com/search?q=context:global+switch+strings.Compare+lang:Go+&amp;patternType=literal">proof 1</a> and <a href="https://sourcegraph.com/search?q=context:global+strings.Compare+lang:Go&amp;patternType=standard">proof 2</a>). But up to now (Go 1.19), the <a href="https://github.com/golang/go/blob/go1.19/src/strings/compare.go#L7-L28">strings.Compare</a> function in the standard library is (<a href="https://news.ycombinator.com/item?id=33353106">intentionally</a>) implemented with <a href="https://go-review.googlesource.com/c/go/+/3012">a non-opitimized way</a>:
+Three-way string comparison is widely used in programming (<a href="https://sourcegraph.com/search?q=context:global+switch+strings.Compare+lang:Go+&amp;patternType=literal">proof 1</a> and <a href="https://sourcegraph.com/search?q=context:global+strings.Compare+lang:Go&amp;patternType=standard">proof 2</a>). But up to now (Go 1.19), the <a href="https://github.com/golang/go/blob/go1.19/src/strings/compare.go#L7-L28">strings.Compare</a> function in the standard library is (<a href="https://news.ycombinator.com/item?id=33353106">intentionally</a>) implemented with <a href="https://go-review.googlesource.com/c/go/+/3012">a non-optimized way</a>:
 </div>
 <p></p>
 <p></p>
@@ -65,7 +65,7 @@ Update: view discussions on <a href="https://old.reddit.com/r/programming/commen
 <p></p>
 <p></p>
 <div class="tmd-usual">
-Update 2: finally, the <code class="tmd-code-span">strings.Compare</code> function <a href="https://github.com/golang/go/commit/fd999fda5941f215ef082c6ef70e44e648db5485">got optimizted in Go 1.23</a>.
+Update 2: finally, the <code class="tmd-code-span">strings.Compare</code> function <a href="https://github.com/golang/go/commit/fd999fda5941f215ef082c6ef70e44e648db5485">got optimized in Go 1.23</a>.
 </div>
 <p></p>
 <p></p>

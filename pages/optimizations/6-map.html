@@ -14,7 +14,7 @@ then the old backing array will be discarded.</p>
 
 <p>In the official standard Go runtime implementation, the backing array of a map will never shrink,
 even if all entries are deleted from the map. This is a form of memory wasting.
-But in practice, this is seldom a problem and and actually often good for program performances.</p>
+But in practice, this is seldom a problem and actually often good for program performances.</p>
 
 <h2>Clear map entries</h2>
 
@@ -276,10 +276,10 @@ The following benchmarks show the performance differences.</p>
 
 import &quot;testing&quot;
 
-//go:noiline
+//go:noinline
 func f() {}
 
-//go:noiline
+//go:noinline
 func g() {}
 
 func IfElse(x bool) func() {

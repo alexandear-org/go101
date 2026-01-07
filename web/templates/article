@@ -214,7 +214,7 @@ You can experience it online <a href="https://tmd.tapirgames.com/play.html">here
 
 <p></p>
 <p>
-If you would like to learn some Go details and facts every serveral days,
+If you would like to learn some Go details and facts every several days,
 please follow <a href="https://x.com/zigo_101">@zigo_101</a>.
 {{ if false -}}
 or join <a href="https://join.slack.com/t/go-101/shared_invite/zt-y2pvwg00-Oz7lDDJu44l~hZsFRUApiA">Go 101 slack channels</a>.
@@ -289,7 +289,7 @@ The digital versions of this book are available at the following places:
 <ul>
 <li>
 	<a href="https://leanpub.com/go101">Leanpub store</a>,
-	<i>$19.99+ (You can get this book from <a href="https://leanpub.com/b/go-optimizations-details-generics-fundamentals">this boundle</a> which also contains 3 other books, with the same price)</i>.
+	<i>$19.99+ (You can get this book from <a href="https://leanpub.com/b/go-optimizations-details-generics-fundamentals">this bundle</a> which also contains 3 other books, with the same price)</i>.
 </li>
 <li>
 	<!--a href="https://www.amazon.com/dp/B07Q3HWZ98">Amazon Kindle store</a>,
